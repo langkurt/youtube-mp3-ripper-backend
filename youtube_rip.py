@@ -46,15 +46,15 @@ def find_file_path(name):
             return os.path.join(writable_dir, file)
 
 
+def serve_mp3_file(file_location):
+    pass
+
+
 def lambda_handler(url):
     status = 200
 
     # url = "https://www.youtube.com/watch?v=TOkQytFTD4E"
-    if not url:
-        return {
-            'statusCode': 400,
-            'body': 'No Url Given'
-        }
+
 
     try:
         result = download_from_youtube(url=url)
