@@ -55,7 +55,6 @@ def lambda_handler(url):
 
     # url = "https://www.youtube.com/watch?v=TOkQytFTD4E"
 
-
     try:
         result = download_from_youtube(url=url)
     except Exception as e:
@@ -71,7 +70,4 @@ def lambda_handler(url):
         result = "Error locating filepath: " + str(e)
         status = 500
 
-    return {
-        'statusCode': status,
-        'body': json.dumps(result)
-    }
+    return file_path
