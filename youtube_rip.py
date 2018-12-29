@@ -46,8 +46,6 @@ def find_file_path(name):
 
 
 def download_and_convert(url):
-    status = 200
-
     # url = "https://www.youtube.com/watch?v=TOkQytFTD4E"
 
     title = download_from_youtube(url=url)

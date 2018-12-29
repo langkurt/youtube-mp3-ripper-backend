@@ -1,9 +1,10 @@
 from flask import Flask, request, send_from_directory
-from youtube_rip import download_and_convert, serve_mp3_file, WRITABLE_DIR
+from youtube_rip import download_and_convert, WRITABLE_DIR
 
 app = Flask(__name__)
 
-@app.route("/",  methods=['GET'])
+
+@app.route("/", methods=['GET'])
 def rip():
     youtube_url = request.args.get('url')
 
