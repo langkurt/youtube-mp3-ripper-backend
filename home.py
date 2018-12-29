@@ -6,6 +6,7 @@ app = Flask(__name__)
 @app.route("/",  methods=['GET'])
 def rip():
     youtube_url = request.args.get('url')
+    return f"Url is {youtube_url}", 200
 
     if not youtube_url:
         return {
@@ -24,3 +25,7 @@ def rip():
 
     serve_mp3_file(mp3_file_location)
     return "Hello World!", 200
+
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0')
