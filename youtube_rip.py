@@ -1,15 +1,14 @@
 import fnmatch
 import os
-import json
 import youtube_dl
 
-writable_dir = "/tmp"
+WRITABLE_DIR = "/tmp"
 
 
 def download_from_youtube(url):
     print("calling download_from_youtube with " + url)
 
-    outpath = writable_dir + '/%(title)s.%(ext)s'
+    outpath = WRITABLE_DIR + '/%(title)s.%(ext)s'
 
     ydl_opts = {
         'outtmpl': outpath,
@@ -40,14 +39,10 @@ def hook(download):
 def find_file_path(name):
     print(name)
     name += "*"
-    for file in os.listdir(writable_dir):
+    for file in os.listdir(WRITABLE_DIR):
         if fnmatch.fnmatch(file, name):
-            print(os.path.join(writable_dir, file))
-            return os.path.join(writable_dir, file)
-
-
-def serve_mp3_file(file_location):
-    pass
+            print(os.path.join(WRITABLE_DIR, file))
+            return os.path.join(WRITABLE_DIR, file)
 
 
 def lambda_handler(url):
@@ -72,5 +67,4 @@ def lambda_handler(url):
 
     return file_path
 
-#lambda_handler("https://www.youtube.com/watch?v=TOkQytFTD4E")
-
+# lambda_handler("https://www.youtube.com/watch?v=TOkQytFTD4E")

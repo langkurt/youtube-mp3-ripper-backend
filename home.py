@@ -1,12 +1,11 @@
-from flask import Flask, request
-from youtube_rip import lambda_handler, serve_mp3_file
+from flask import Flask, request, send_from_directory
+from youtube_rip import lambda_handler, serve_mp3_file, WRITABLE_DIR
 
 app = Flask(__name__)
 
 @app.route("/",  methods=['GET'])
 def rip():
     youtube_url = request.args.get('url')
-    return f"Url is {youtube_url}", 200
 
     if not youtube_url:
         return {
@@ -23,7 +22,7 @@ def rip():
             'body': "Error converting url to mp3: %s" % str(e)
         }
 
-    serve_mp3_file(mp3_file_location)
+    send_from_directory(directory=WRITABLE_DIR, filename=mp3_file_location)
     return "Hello World!", 200
 
 
