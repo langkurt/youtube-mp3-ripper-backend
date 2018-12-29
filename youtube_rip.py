@@ -45,26 +45,17 @@ def find_file_path(name):
             return os.path.join(WRITABLE_DIR, file)
 
 
-def lambda_handler(url):
+def download_and_convert(url):
     status = 200
 
     # url = "https://www.youtube.com/watch?v=TOkQytFTD4E"
 
-    try:
-        result = download_from_youtube(url=url)
-    except Exception as e:
-        result = "Error downloading file: " + str(e)
-        status = 500
+    title = download_from_youtube(url=url)
+    print(title)
 
-    print(result)
-
-    try:
-        file_path = find_file_path(result)
-        print(file_path)
-    except Exception as e:
-        result = "Error locating filepath: " + str(e)
-        status = 500
+    file_path = find_file_path(title)
+    print(file_path)
 
     return file_path
 
-# lambda_handler("https://www.youtube.com/watch?v=TOkQytFTD4E")
+# download_and_convert("https://www.youtube.com/watch?v=TOkQytFTD4E")

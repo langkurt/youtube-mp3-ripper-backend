@@ -1,5 +1,5 @@
 from flask import Flask, request, send_from_directory
-from youtube_rip import lambda_handler, serve_mp3_file, WRITABLE_DIR
+from youtube_rip import download_and_convert, serve_mp3_file, WRITABLE_DIR
 
 app = Flask(__name__)
 
@@ -14,7 +14,7 @@ def rip():
         }
 
     try:
-        mp3_file_location = lambda_handler(youtube_url)
+        mp3_file_location = download_and_convert(youtube_url)
     except Exception as e:
         print(str(e))
         return {
