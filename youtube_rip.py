@@ -18,9 +18,13 @@ def download_from_youtube(url):
             'key': 'FFmpegExtractAudio',
             'preferredcodec': 'mp3',
             'preferredquality': '0',
-        }],
+        }, {
+            'key': 'EmbedThumbnail'
+        }
+        ],
         'progress_hooks': [hook],
-        'prefer_ffmpeg': True
+        'prefer_ffmpeg': True,
+        'writethumbnail': True
     }
 
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
