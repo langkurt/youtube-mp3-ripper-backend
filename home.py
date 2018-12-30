@@ -15,7 +15,7 @@ def rip():
         return jsonify(error), 400
 
     try:
-        mp3_file_location = download_and_convert(youtube_url)
+        mp3_file_name = download_and_convert(youtube_url)
     except Exception as e:
         print(str(e))
         error = {
@@ -25,13 +25,11 @@ def rip():
 
     response = Response()
 
-    response.headers["Content-Disposition"] = "attachment; filename=Dance Gavin Dance - Carl Barker.mp3"
-    response.headers["X-Accel-Redirect"] = "/protected/Dance Gavin Dance - Carl Barker.mp3" # mp3_file_location
+    response.headers["Content-Disposition"] = "attachment; filename={}".format(mp3_file_name)
+    response.headers["X-Accel-Redirect"] = "/protected/{}".format(mp3_file_name)  # "protected" is the nginx location
     response.headers["Content-Type"] = "application/octet-stream"
 
     return response
-    #  print("Send from directory %s with file %s" % (WRITABLE_DIR, mp3_file_location))
-    # return send_from_directory(directory=WRITABLE_DIR + "/", filename=mp3_file_location, as_attachment=True)
 
 
 if __name__ == "__main__":

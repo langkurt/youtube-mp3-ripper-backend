@@ -36,13 +36,12 @@ def hook(download):
         print('Done downloading, now converting ...')
 
 
-def find_file_path(name):
+def find_file_name(name):
     print(name)
     name += "*"
     for file in os.listdir(WRITABLE_DIR):
         if fnmatch.fnmatch(file, name):
-            print(os.path.join(WRITABLE_DIR, file))
-            return os.path.join(WRITABLE_DIR, file)
+            return file
 
 
 def download_and_convert(url):
@@ -51,9 +50,9 @@ def download_and_convert(url):
     title = download_from_youtube(url=url)
     print(title)
 
-    file_path = find_file_path(title)
-    print(file_path)
+    file_name = find_file_name(title)
+    print(file_name)
 
-    return file_path
+    return file_name
 
 # download_and_convert("https://www.youtube.com/watch?v=TOkQytFTD4E")
