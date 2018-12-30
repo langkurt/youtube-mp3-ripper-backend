@@ -1,5 +1,6 @@
-from flask import Flask, request, send_from_directory, jsonify, Response
-from youtube_rip import download_and_convert, WRITABLE_DIR
+from flask import Flask, request, jsonify, Response
+from youtube_rip import download_and_convert
+import urllib
 
 app = Flask(__name__)
 
@@ -26,7 +27,7 @@ def rip():
     response = Response()
 
     response.headers["Content-Disposition"] = "attachment; filename={}".format(mp3_file_name)
-    response.headers["X-Accel-Redirect"] = "/protected/{}".format(mp3_file_name)  # "protected" is the nginx location
+    response.headers["X-Accel-Redirect"] = urllib.quote_plus("/protected/{}".format(mp3_file_name))  # "protected" is the nginx location
     response.headers["Content-Type"] = "application/octet-stream"
 
     return response
