@@ -1,4 +1,4 @@
-from flask import Flask, request, send_from_directory, jsonify
+from flask import Flask, request, send_from_directory, jsonify, Response
 from youtube_rip import download_and_convert, WRITABLE_DIR
 
 app = Flask(__name__)
@@ -23,8 +23,15 @@ def rip():
         }
         return jsonify(error), 500
 
-    send_from_directory(directory=WRITABLE_DIR, filename=mp3_file_location)
-    return "Finished!", 200
+    response = Response()
+
+    response.headers["Content-Disposition"] = "attachment; filename=Dance Gavin Dance - Carl Barker.mp3"
+    response.headers["X-Accel-Redirect"] = "/protected/Dance Gavin Dance - Carl Barker.mp3" # mp3_file_location
+    response.headers["Content-Type"] = "application/octet-stream"
+
+    return response
+    #  print("Send from directory %s with file %s" % (WRITABLE_DIR, mp3_file_location))
+    # return send_from_directory(directory=WRITABLE_DIR + "/", filename=mp3_file_location, as_attachment=True)
 
 
 if __name__ == "__main__":
