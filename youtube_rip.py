@@ -5,7 +5,7 @@ import youtube_dl
 WRITABLE_DIR = "/tmp"
 
 
-def download_from_youtube(url):
+def make_youtube_dl_call(url, skip_download=False):
     print("calling download_from_youtube with " + url)
 
     outpath = WRITABLE_DIR + '/%(title)s.%(ext)s'
@@ -21,9 +21,10 @@ def download_from_youtube(url):
         }, {
             'key': 'EmbedThumbnail'
         }],
-        'progress_hooks': [hook],
+        'progress_hooks': [post_download_callback],
         'prefer_ffmpeg': True,
-        'writethumbnail': True
+        'writethumbnail': True,
+        'skip_download': skip_download
     }
 
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
@@ -32,7 +33,7 @@ def download_from_youtube(url):
         return title
 
 
-def hook(download):
+def post_download_callback(download):
     print("download is: ")
     print(download)
     if download['status'] == 'finished':
@@ -50,7 +51,7 @@ def find_file_name(name):
 def download_and_convert(url):
     # url = "https://www.youtube.com/watch?v=TOkQytFTD4E"
 
-    title = download_from_youtube(url=url)
+    title = make_youtube_dl_call(url=url)
     print(title)
 
     file_name = find_file_name(title)
