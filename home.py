@@ -1,12 +1,16 @@
+import logging
+
 from flask import Flask, request, jsonify, Response
 from youtube_rip import download_and_convert, make_youtube_dl_call
 from urllib.parse import quote_plus
 
 app = Flask(__name__)
+logger = logging.getLogger(__name__)
 
 
 @app.route("/", methods=['GET'])
 def rip():
+    logger.info("Received call: {}".format(request))
     youtube_url = request.args.get('url')
 
     if not youtube_url:
@@ -36,6 +40,7 @@ def rip():
 
 @app.route("/", methods=['HEAD'])
 def get_url_metadata():
+    logger.info("Received call: {}".format(request))
     youtube_url = request.args.get('url')
 
     if not youtube_url:
@@ -55,7 +60,8 @@ def get_url_metadata():
 
     response = Response()
     response.headers["youtube_title"] = youtube_title
-
+    
+    print(response)
     return response
 
 

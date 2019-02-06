@@ -6,7 +6,7 @@ WRITABLE_DIR = "/tmp"
 
 
 def make_youtube_dl_call(url, skip_download=False):
-    print("calling download_from_youtube with " + url)
+    print("calling download_from_youtube with " + url + ". Skip_download is set to " + str(skip_download))
 
     outpath = WRITABLE_DIR + '/%(title)s.%(ext)s'
 
