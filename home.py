@@ -9,6 +9,13 @@ logger = logging.getLogger(__name__)
 
 
 @app.route("/", methods=['GET'])
+def home():
+    if request.method == 'HEAD':
+        return get_url_metadata()
+    else:
+        return rip()
+
+
 def rip():
     logger.info("Received call: {}".format(request))
     youtube_url = request.args.get('url')
@@ -38,7 +45,6 @@ def rip():
     return response
 
 
-@app.route("/", methods=['HEAD'])
 def get_url_metadata():
     logger.info("Received call: {}".format(request))
     youtube_url = request.args.get('url')
@@ -60,7 +66,7 @@ def get_url_metadata():
 
     response = Response()
     response.headers["youtube_title"] = youtube_title
-    
+
     print(response)
     return response
 
