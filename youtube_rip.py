@@ -10,25 +10,32 @@ def make_youtube_dl_call(url, skip_download=False):
 
     outpath = WRITABLE_DIR + '/%(title)s.%(ext)s'
 
-    ydl_opts = {
-        'outtmpl': outpath,
-        'forcefilename': True,
-        'format': 'bestaudio/best',
-        'postprocessors': [{
-            'key': 'FFmpegExtractAudio',
-            'preferredcodec': 'mp3',
-            'preferredquality': '0',
-        }, {
-            'key': 'EmbedThumbnail'
-        }],
-        'progress_hooks': [post_download_callback],
-        'prefer_ffmpeg': True,
-        'writethumbnail': True,
-        'skip_download': skip_download
-    }
+    if skip_download:
+        ydl_opts = {
+            'outtmpl': outpath,
+            'forcefilename': True,
+            'skip_download': True
+        }
+    else:
+        ydl_opts = {
+            'outtmpl': outpath,
+            'forcefilename': True,
+            'format': 'bestaudio/best',
+            'postprocessors': [{
+                'key': 'FFmpegExtractAudio',
+                'preferredcodec': 'mp3',
+                'preferredquality': '0',
+            }, {
+                'key': 'EmbedThumbnail'
+            }],
+            'progress_hooks': [post_download_callback],
+            'prefer_ffmpeg': True,
+            'writethumbnail': True
+        }
 
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-        info_dict = ydl.extract_info(url, download=True)
+        download = not skip_download
+        info_dict = ydl.extract_info(url, download=download)
         title = info_dict.get('title')
         return title
 
