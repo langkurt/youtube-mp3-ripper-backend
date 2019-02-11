@@ -48,10 +48,11 @@ def post_download_callback(download):
 
 
 def find_file_name(name):
-    print(name)
+    print("Locating file name: {}".format(name))
     name += "*"
     for file in os.listdir(WRITABLE_DIR):
         if fnmatch.fnmatch(file, name):
+            print("File located: {}".format(file))
             return file
 
 

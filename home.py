@@ -38,9 +38,10 @@ def rip():
     response = Response()
 
     # "protected" is the nginx location
-    response.headers["X-Accel-Redirect"] = quote_plus("/protected/{}".format(mp3_file_name))
+    response.headers["X-Accel-Redirect"] = "/protected/{}".format(mp3_file_name)
     response.headers["Content-Disposition"] = "attachment; filename={}".format(mp3_file_name)
     response.headers["Content-Type"] = "application/octet-stream"
+    print("In rip() headers are: " + str(response.headers))
 
     return response
 
@@ -64,10 +65,14 @@ def get_url_metadata():
         }
         return jsonify(error), 500
 
-    response = Response()
+    # Title wont include file extension. Add it here. For now, use hardcoded "mp3"
+    youtube_title = youtube_title + ".mp3"
+
+    response = Response("{}")
     response.headers["youtube_title"] = youtube_title
 
-    print(response)
+    print("Returning HEAD request: {}".format(response))
+    print(response.headers)
     return response
 
 
