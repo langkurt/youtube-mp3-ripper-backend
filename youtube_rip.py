@@ -5,6 +5,19 @@ import youtube_dl
 WRITABLE_DIR = "/tmp"
 
 
+class NameStorage():
+    def __init__(self):
+        self.filename = ""
+
+    def save_name(self, download):
+        name = download['filename']
+        name = name.rsplit(".", 1)[0]
+        self.filename = name
+
+
+name_container = NameStorage()
+
+
 def make_youtube_dl_call(url, skip_download=False):
     print("calling download_from_youtube with " + url + ". Skip_download is set to " + str(skip_download))
 
@@ -12,8 +25,8 @@ def make_youtube_dl_call(url, skip_download=False):
 
     if skip_download:
         ydl_opts = {
-            'outtmpl': outpath,
-            'forcefilename': True,
+            'outtmpl': outpath,  # Template for output names
+            'forcefilename': True,  # Force printing final filename.
             'skip_download': True
         }
     else:
@@ -43,17 +56,26 @@ def make_youtube_dl_call(url, skip_download=False):
 def post_download_callback(download):
     print("download is: ")
     print(download)
+    name_container.save_name(download)
+    # webm location in temp is located at download['filename']. capture with closure?
     if download['status'] == 'finished':
         print('Done downloading, now converting ...')
 
 
 def find_file_name(name):
-    print("Locating file name: {}".format(name))
-    name += "*"
+    print("Passed in file name to find: {}".format(name))
+    print("Screw it, using some name container class to find: " + name_container.filename)
+    name = name_container.filename
+    name = name.split('/')[-1]
+    glob_name = name + "*"
     for file in os.listdir(WRITABLE_DIR):
-        if fnmatch.fnmatch(file, name):
+        print(f"Seaching file: '{file}'")
+        if fnmatch.fnmatch(file, glob_name):
             print("File located: {}".format(file))
             return file
+    else:
+        print("Warning: Could not find file `{}`, using hardcoded .mp3".format(name))
+        return name + ".mp3"
 
 
 def download_and_convert(url):

@@ -2,7 +2,7 @@ import logging
 
 from flask import Flask, request, jsonify, Response
 from youtube_rip import download_and_convert, make_youtube_dl_call
-from urllib.parse import quote_plus
+from urllib.parse import quote_plus, quote
 
 app = Flask(__name__)
 logger = logging.getLogger(__name__)
@@ -28,6 +28,9 @@ def rip():
 
     try:
         mp3_file_name = download_and_convert(youtube_url)
+        print(f"In rip(): got the mp3 file name: '{mp3_file_name}'")
+        mp3_file_name = quote(mp3_file_name)
+        print(f"In rip(): encoded mp3 file name: '{mp3_file_name}'")
     except Exception as e:
         print(str(e))
         error = {
