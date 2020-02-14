@@ -10,13 +10,6 @@ logger = logging.getLogger(__name__)
 
 @app.route("/", methods=['GET'])
 def home():
-    if request.method == 'HEAD':
-        return get_url_metadata()
-    else:
-        return rip()
-
-
-def rip():
     logger.info("Received call: {}".format(request))
     youtube_url = request.args.get('url')
 
@@ -25,6 +18,14 @@ def rip():
             'message': 'No Url Given'
         }
         return jsonify(error), 400
+
+    if request.method == 'HEAD':
+        return get_url_metadata(youtube_url)
+    else:
+        return rip(youtube_url)
+
+
+def rip(youtube_url):
 
     try:
         mp3_file_name = download_and_convert(youtube_url)
@@ -49,15 +50,7 @@ def rip():
     return response
 
 
-def get_url_metadata():
-    logger.info("Received call: {}".format(request))
-    youtube_url = request.args.get('url')
-
-    if not youtube_url:
-        error = {
-            'message': 'No Url Given'
-        }
-        return jsonify(error), 400
+def get_url_metadata(youtube_url):
 
     try:
         youtube_title = make_youtube_dl_call(youtube_url, skip_download=True)
