@@ -5,7 +5,7 @@ import youtube_dl
 WRITABLE_DIR = "/tmp"
 
 
-class NameStorage():
+class NameStorage:
     def __init__(self):
         self.filename = ""
 
